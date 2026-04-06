@@ -62,21 +62,42 @@ function draw() {
     createContext.fillRect(food.x, food.y, box, box);
 
     let head = { ...snake[0] };
+    
     if (direction === "UP") head.y -= box;
     else if (direction === "DOWN") head.y += box;
     else if (direction === "LEFT") head.x -= box;
     else if (direction === "RIGHT") head.x += box;
 
+     if (
+    head.x < 0 ||
+    head.y < 0 ||
+    head.x >= canvas.width + 1 ||
+    head.y >= canvas.height + 1
+    ) {
+        clearInterval(game); // stops game loop
+        alert("Game Over 💀");
+        return;
+      }  
+
+      // Move the snake by adding the new head position
     snake.unshift(head);
-    //snake.pop();
 
     if (head.x === food.x && head.y === food.y) {
-    spawnFood(); // nueva comida
+    spawnFood();
     } else {
-    snake.pop(); // solo se mueve si NO comió
+    snake.pop(); // snake moves forward by removing the tail segment
 }
+    
+    // Check for self-collision
+    for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x === head.x && snake[i].y === head.y) {
+    clearInterval(game);
+    alert("Game Over 💀");
+    }
 }
 
-setInterval(draw, 180);
+}
+
+const game = setInterval(draw, 100);
 
 }
