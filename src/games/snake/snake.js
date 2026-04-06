@@ -12,6 +12,17 @@ container.appendChild(canvas);
 const box = 20; // Size of each box
 
 let snake = [{ x: 200, y: 200 } ];
+let food = { x: 0, y: 0 };
+
+const tileCount = canvas.width / box;
+
+spawnFood();
+
+function spawnFood() {
+    food.x = Math.floor(Math.random() * tileCount) * box;
+    food.y = Math.floor(Math.random() * tileCount) * box;
+}
+
 
 let direction = "RIGHT";
 
@@ -30,6 +41,8 @@ function draw() {
     snake.forEach((segment) => {
         createContext.fillRect(segment.x, segment.y, box, box);
     });
+    createContext.fillStyle = "red";
+    createContext.fillRect(food.x, food.y, box, box);
 
     let head = { ...snake[0] };
     if (direction === "UP") head.y -= box;
@@ -38,7 +51,13 @@ function draw() {
     else if (direction === "RIGHT") head.x += box;
 
     snake.unshift(head);
-    snake.pop();
+    //snake.pop();
+
+    if (head.x === food.x && head.y === food.y) {
+    spawnFood(); // nueva comida
+    } else {
+    snake.pop(); // solo se mueve si NO comió
+}
 }
 
 setInterval(draw, 180);
