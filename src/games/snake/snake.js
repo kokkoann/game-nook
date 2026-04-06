@@ -19,8 +19,25 @@ const tileCount = canvas.width / box;
 spawnFood();
 
 function spawnFood() {
-    food.x = Math.floor(Math.random() * tileCount) * box;
-    food.y = Math.floor(Math.random() * tileCount) * box;
+    let validPosition = false;
+    while (!validPosition) {
+        let newX = Math.floor(Math.random() * tileCount) * box;
+        let newY = Math.floor(Math.random() * tileCount) * box;
+
+        // Check if the new food position collides with the snake
+        validPosition = true;
+        for (let segment of snake) {
+            if (segment.x === newX && segment.y === newY) {
+                validPosition = false;
+                break;
+            }
+        }
+
+        if (validPosition) {
+            food.x = newX;
+            food.y = newY;
+        }
+    }
 }
 
 
