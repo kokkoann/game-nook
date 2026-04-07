@@ -13,6 +13,7 @@ const box = 20; // Size of each box
 
 let snake = [{ x: 200, y: 200 } ];
 let food = { x: 0, y: 0 };
+let score = 0;
 
 const tileCount = canvas.width / box;
 
@@ -76,6 +77,7 @@ function draw() {
     ) {
         clearInterval(game); // stops game loop
         alert("Game Over 💀");
+        score = 0;
         return;
       }  
 
@@ -84,6 +86,7 @@ function draw() {
 
     if (head.x === food.x && head.y === food.y) {
     spawnFood();
+    score++;
     } else {
     snake.pop(); // snake moves forward by removing the tail segment
 }
@@ -93,8 +96,13 @@ function draw() {
     if (snake[i].x === head.x && snake[i].y === head.y) {
     clearInterval(game);
     alert("Game Over 💀");
+    score = 0;
     }
 }
+
+createContext.fillStyle = "white";
+createContext.font = "20px Arial";
+createContext.fillText("Score: " + score, 10, 20);
 
 }
 
